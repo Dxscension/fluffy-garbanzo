@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-print('\n--------------------------\nThanks for using fragment!\nNote: This is the release 0.2, I won\'t update this anymore, reason? : re creating the ui.\n--------------------------')
+print('\n--------------------------\nThanks for using fragment!\nNote: I won\'t update this script for a while, reason? I will re build the UI.\n--------------------------')
 if  game.CoreGui:FindFirstChild("0O0OOO000O0OOO0O0O0") then
 	game.CoreGui["0O0OOO000O0OOO0O0O0"]:Destroy();
 end
@@ -2467,6 +2467,7 @@ getgenv().Toggles = {
 	padesp = false;
 	ws = false;
 	sp = false;
+	af = false;
 }
 getgenv().BagRarity = "Rare"
 getgenv().AntiCheat = {
@@ -2579,6 +2580,9 @@ end)
 Cola:AddToggle("Auto cola", getgenv().Toggles.AutoCola, function(v)
 	getgenv().Toggles.AutoCola = v
 end)
+lc:AddToggle("Always Flow", getgenv().Toggles.af, function(v)
+	getgenv().Toggles.af = v
+end)
 lc:AddToggle("Modify Combo", getgenv().Toggles.CL, function(v)
 	getgenv().Toggles.CL = v
 end)
@@ -2600,6 +2604,7 @@ end)
 misc:AddToggle("Pad Esp", getgenv().Toggles.padesp, function(v)
 	getgenv().Toggles.padesp = v
 end)
+
 
 
 -- BYPASSING ANTICHEAT, special thanks to xgamer626 for updated version <3 --
@@ -2872,7 +2877,10 @@ getgenv().Connections.Stepped_RunService = game:GetService("RunService").Stepped
 		if  getgenv().Toggles.infglide then
 			ammo.glideStamina = 1
 		end
-		
+		if getgenv().Toggles.af then
+			general.flowActive = true;
+			general.flowDelta = 100;
+		end
 		--game:GetService("Players").0N00BM4STER0.PlayerGui.GameplayUI.Zipline
 
 		if getgenv().Toggles.autosell and game:GetService("ReplicatedStorage").PlayerData.LocalPlayer.Generic.Points.Value > 10000 then
