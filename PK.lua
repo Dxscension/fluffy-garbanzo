@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-print('\n--------------------------\nThanks for using fragment!\nNote: This is the first release of the script, hope no one say it\'t too expensive or things like that :c\n--------------------------')
+print('\n--------------------------\nThanks for using fragment!\nNote: This is the release 0.2, I won\'t update this anymore, reason? : re creating the ui.\n--------------------------')
 if  game.CoreGui:FindFirstChild("0O0OOO000O0OOO0O0O0") then
 	game.CoreGui["0O0OOO000O0OOO0O0O0"]:Destroy();
 end
@@ -2464,6 +2464,9 @@ getgenv().Toggles = {
 	InfWallClimb = false;
 	fastGrapple = false;
 	infglide = false;
+	padesp = false;
+	ws = false;
+	sp = false;
 }
 getgenv().BagRarity = "Rare"
 getgenv().AntiCheat = {
@@ -2494,6 +2497,8 @@ getgenv().Other = {
 }
 getgenv().Sliders = {
 	CL = 1;
+	ws = 1;
+	sp = 1;
 }
 local client = game.Players.LocalPlayer
 --[[
@@ -2559,13 +2564,13 @@ end)
 adrenaline:AddToggle("No Cooldown", getgenv().Toggles.NoAdrenalineCooldown, function(v)
 	getgenv().Toggles.NoAdrenalineCooldown = v
 end)
-less:AddToggle("Remoce Charge CC", getgenv().Toggles.CC, function(v)
+less:AddToggle("Remove Charge CC", getgenv().Toggles.CC, function(v)
 	getgenv().Toggles.CC = v
 end)
 misc:AddToggle("No Dunce cap", getgenv().Toggles.NoDunce, function(v)
 	getgenv().Toggles.NoDunce = v
 end)
-lc:AddToggle("GodMode", getgenv().Toggles.GodMode, function(v)
+misc:AddToggle("GodMode", getgenv().Toggles.GodMode, function(v)
 	getgenv().Toggles.GodMode = v
 end)
 misc:AddToggle("No Trail", getgenv().Toggles.NoTrail, function(v)
@@ -2580,6 +2585,22 @@ end)
 lc:AddSlider("Combo Level", 5,0,0, false,function(v)
 	getgenv().Sliders.CL = v
 end)
+lc:AddToggle("Modify Walkspeed", getgenv().Toggles.ws, function(v)
+	getgenv().Toggles.ws = v
+end)
+lc:AddSlider("walkspeed", 20,1,1, false,function(v)
+	getgenv().Sliders.ws = v
+end)
+lc:AddToggle("mod Slidespeed", getgenv().Toggles.sp, function(v)
+	getgenv().Toggles.sp = v
+end)
+lc:AddSlider("Slidespeed", 1000,1,1, false,function(v)
+	getgenv().Sliders.sp = v
+end)
+misc:AddToggle("Pad Esp", getgenv().Toggles.padesp, function(v)
+	getgenv().Toggles.padesp = v
+end)
+
 
 -- BYPASSING ANTICHEAT, special thanks to xgamer626 for updated version <3 --
 
@@ -2743,6 +2764,53 @@ if getgenv().exec == nil or not getgenv().exec then
 	
 end
 --//
+-- Settings --
+
+getgenv().settings = {
+   
+	fillcolor = Color3.fromRGB(255, 255, 255);
+	filltransparency = .75;
+	
+	outlinecolor = Color3.fromRGB(255, 255, 255);
+	outlinetransparency = 0;
+	
+ }
+ 
+ -- Script --
+ 
+ local plr = game:service'Players'.LocalPlayer
+ local highlights = Instance.new('Folder', game:service'CoreGui')
+ 
+ local function addhighlight(object)
+	local highlight = Instance.new('Highlight', highlights)
+	highlight.Adornee = object
+	
+	highlight.FillColor = getgenv().settings.fillcolor
+	highlight.FillTransparency = getgenv().settings.filltransparency
+	
+	highlight.OutlineColor = getgenv().settings.outlinecolor
+	highlight.OutlineTransparency = getgenv().settings.outlinetransparency
+	highlight.Enabled = getgenv().Toggles.padesp
+	highlight.Adornee.Changed:Connect(function()
+		if not highlight.Adornee or not highlight.Adornee.Parent then
+			highlight:Destroy()    
+		end
+	end)
+	
+	return highlight
+ end
+ 
+ local function addtoplayer(object)
+	if object.Name == 'Pad' or object.Name == 'Pillow'  then
+		addhighlight(object)
+	end
+ end
+
+
+ 
+ 
+   
+--//
 getgenv().Connections.Stepped_RunService = game:GetService("RunService").Stepped:Connect(function()
 	if Player.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Backpack:FindFirstChild("Main") then
 		getgenv().alive = true
@@ -2784,6 +2852,14 @@ getgenv().Connections.Stepped_RunService = game:GetService("RunService").Stepped
 			general.chargeCooldown = 2
 		end
 
+		if getgenv().Toggles.ws == true then
+			general.walkspeedMult = getgenv().Sliders.ws
+		else
+			general.walkspeedMult = 1
+		end
+		if getgenv().Toggles.sp == true then
+			general.slidespeed  = getgenv().Sliders.sp
+		end
 		if getgenv().Toggles.InfGrappler then 
 			ammo.canGrapple = true -- inf grappler
 		end
@@ -2835,7 +2911,7 @@ getgenv().Connections.Input_Began = UserInputService.InputBegan:Connect(function
 	local main = game.Players.LocalPlayer.Backpack:WaitForChild("Main") -- Script where u find every single local variable.
 
 	local general = getupvalue(getsenv(main).resetAmmo, 1);
-	local Back_Gear_Key = Player.PlayerGui.NewUI.Windows.Keybinds.Window.UseKit.Binding
+	local Back_Gear_Key = Player.PlayerGui.NewUI.Windows.Keybinds.Window.UseKit.Binding -- gets the specific bind of the gear
 
 	if Input.KeyCode == Enum.KeyCode[Back_Gear_Key.Text] and not Game_Processed then
 		if getgenv().Toggles.InfAdrenaline == false then 
@@ -2845,7 +2921,7 @@ getgenv().Connections.Input_Began = UserInputService.InputBegan:Connect(function
 			if getgenv().Other.Stimmed == true then
 				-- Unstim
 				getgenv().Other.Stimmed = false
-				if getgenv().Toggles.NoAdrenalineCooldown then
+				if getgenv().Toggles.NoAdrenalineCooldown then -- this is to stop the 30 seconds cooldown of the adrenaline
 					general.adrenalineCooldown = 0.3
 				else
 					general.adrenalineCooldown = 30
@@ -2859,3 +2935,9 @@ getgenv().Connections.Input_Began = UserInputService.InputBegan:Connect(function
 		end
 	end   
 end)
+
+while wait() do
+	for i,v in pairs(workspace:GetChildren()) do
+		addtoplayer(v)
+	end
+end
