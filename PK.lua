@@ -885,7 +885,7 @@ function library:CreateWindow(Title, descrip, icon)
 		Title.Position = UDim2.new(0.03401291, 0, 0.0952741355, 0)
 		Title.Size = UDim2.new(0, 99, 0, 13)
 		Title.Font = Enum.Font.SourceSansSemibold
-		Title.Text = "TITLEE"
+		Title.Text = Text
 		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Title.TextSize = 16.000
 		Title.TextXAlignment = Enum.TextXAlignment.Left
