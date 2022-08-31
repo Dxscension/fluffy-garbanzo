@@ -1,22 +1,5 @@
 rconsoleclear()
 
-if getgenv().PAST == false or getgenv().PAST == nil then
-	game:GetService("Players").LocalPlayer:Kick("STOP TRYING TO BYPASS THE KEY SISTEM! [1]")
-	game:ShutDown()
-	while true do
-		wait()
-		if getgenv().Activated == true then
-			pcall(function()
-				getgenv().Connections.Input_Began:Disconnect()
-				getgenv().Connections.Stepped_RunService:Disconnect()
-				getgenv().Connections.Staff_Notification:Disconnect()
-				getgenv().Connections.Player_Notification:Disconnect()
-			end)
-		end
-	end
-	while true do end
-	return
-end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
