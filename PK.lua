@@ -1,5 +1,8 @@
 rconsoleclear()
 
+if game.CoreGui:FindFirstChild('SYU') then
+	game.CoreGui['SYU']:Destroy()
+end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -39,8 +42,6 @@ function encode(str)
 		end
 		))
 end
-
-
 
 
 local function SXX_In(Input)
@@ -1515,7 +1516,7 @@ misc:AddButton('Go to bag',  function()
 	end
 end)
 misc:AddLabel("Trials")
-lc:AddSlider("Trial Speed", 3,60,5, false,function(v)
+misc:AddSlider("Trial Speed", 5,60,5, false,function(v)
 	getgenv().TS = v
 end)
 misc:AddButton("AutoComplete trial", function(v)
